@@ -1,0 +1,23 @@
+{
+  "name": "celo-academy-supplychain-challenge",
+  "version": "1.0.0",
+  "description": "Answer to Celo Academy coding challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphaelpg/Celo-Academy-SupplyChain-Challenge.git"
+  },
+  "author": "raphaelpg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raphaelpg/Celo-Academy-SupplyChain-Challenge/issues"
+  },
+  "homepage": "https://github.com/raphaelpg/Celo-Academy-SupplyChain-Challenge#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.18.0"
+  }
+}
