@@ -15,7 +15,6 @@ describe("SupplyChainTracking tests", function () {
     return { owner, addr1, addr2, supplyChainTracking };
   }
 
-  // Test Actors functions
   describe("Test Actors functions", async function () {
     it("Should add an actor", async function () {
       const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\rapha\\Documents\\IT\\celo-academy\\Celo-Academy-SupplyChain-Challenge\\contracts\\SupplyChainTracking.sol": {
-      "lastModificationDate": 1696948592977,
-      "contentHash": "98583076bff4d9a9a29701ad7976084e",
+      "lastModificationDate": 1696956772319,
+      "contentHash": "c98d64fa78593a6f59c160d53cf03bc7",
       "sourceName": "contracts/SupplyChainTracking.sol",
       "solcConfig": {
         "version": "0.8.20",

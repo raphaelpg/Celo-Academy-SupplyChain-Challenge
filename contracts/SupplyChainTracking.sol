@@ -2,7 +2,6 @@
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "hardhat/console.sol";
 
 contract SupplyChainTracking is Ownable {
 
@@ -39,6 +38,9 @@ contract SupplyChainTracking is Ownable {
   event ActorRegistered(address actor, Role role);
   event ActorDisabled(address actor);
   event AssetRegistered(uint productId);
+  event AssetTransfered(uint productId, address _from, address _to);
+
+  error OnlyAssetOwner();
 
   /**
    * Contract initialization.
@@ -52,6 +54,14 @@ contract SupplyChainTracking is Ownable {
      * Assets ids below 1 and above assetCounter won't be returned by the get function
      */
     assetCounter = 1;
+  }
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyAssetOwner(uint _assetId) {
+    if (assets[_assetId].currentHolder != msg.sender) revert OnlyAssetOwner();
+    _;
   }
 
   /**
@@ -152,5 +162,25 @@ contract SupplyChainTracking is Ownable {
       assets[_assetId].currentHolder,
       assets[_assetId].holderHistory
     );
+  }
+
+  /**
+   * Function to transfer an asset to the next actor
+   * @param _assetId The ID of the asset being transferred
+   * @param _newHolder The ethereum address of the next holder
+   */
+  function transferAsset(uint _assetId, address _newHolder)
+    public
+    onlyAssetOwner(_assetId)
+  {
+    address currentHolder = msg.sender;
+    require(_assetId >= 1 && _assetId < assetCounter, "Asset ID must be within valid range");
+    require(actors[_newHolder].active == true, "Next owner is not valid");
+    require(actors[currentHolder].role != Role.Consumer, "Consumer can not transfer asset");
+    require(uint8(actors[_newHolder].role) == uint8(actors[currentHolder].role) + 1, "Wrong next owner role");
+
+    assets[_assetId].currentHolder = _newHolder;
+    assets[_assetId].holderHistory.push(_newHolder);
+    emit AssetTransfered(_assetId, currentHolder, _newHolder);
   }
 }

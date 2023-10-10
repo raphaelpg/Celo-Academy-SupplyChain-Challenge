@@ -15,7 +15,6 @@ describe("SupplyChainTracking tests", function () {
     return { owner, addr1, addr2, supplyChainTracking };
   }
 
-  // Test deployment
   describe("Test deployment", async function () {
     it("Should deploy SupplyChainTracking", async function () {
       const { supplyChainTracking, owner } = await loadFixture(deploySupplyChainTrackingFixture);
