@@ -120,8 +120,28 @@ describe("SupplyChainTracking tests", function () {
 
       await supplyChainTracking.connect(addr1).registerAsset(assetType, assetProductionDate, assetOrigin);
 
-      const result = await supplyChainTracking.getAsset(0);
+      const result = await supplyChainTracking.getAsset(1);
       expect(result).to.deep.equal(assetData);
+    })
+
+    it("Should revert data retrieval if asset does not exists", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      await supplyChainTracking.registerActor(addr1.address, 0)
+      const currentTimestamp = Date.now().toString();
+      await supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
+
+      const resultInf = supplyChainTracking.getAsset(0);
+      await expect(resultInf).to.be.revertedWith("Asset ID must be within valid range")
+      const resultSup = supplyChainTracking.getAsset(2);
+      await expect(resultSup).to.be.revertedWith("Asset ID must be within valid range")
+    })
+
+    it("Should revert data retrieval if asset list is empty", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      await supplyChainTracking.registerActor(addr1.address, 0);
+
+      const result = supplyChainTracking.getAsset(1);
+      await expect(result).to.be.revertedWith("Asset ID must be within valid range")
     })
   });
 });

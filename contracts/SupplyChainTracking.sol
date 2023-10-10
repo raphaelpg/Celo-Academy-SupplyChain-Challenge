@@ -46,7 +46,12 @@ contract SupplyChainTracking is Ownable {
   constructor() 
     Ownable(msg.sender) 
   {
-    assetCounter = 0;
+    /**
+     * We start the asset counter at 1 for clarity purposes and ease security checks:
+     * First asset ID will start at 1 avoinding possible confusion arround arrays first element
+     * Assets ids below 1 and above assetCounter won't be returned by the get function
+     */
+    assetCounter = 1;
   }
 
   /**
@@ -103,7 +108,6 @@ contract SupplyChainTracking is Ownable {
     public 
   {
     address _actor = msg.sender;
-    console.log(actors[_actor].active);
     require(actors[_actor].active == true, "Actor not enabled");
     require(actors[_actor].role == Role.Producer, "Actor's role must be Producer");
 
@@ -128,6 +132,7 @@ contract SupplyChainTracking is Ownable {
     view
     returns (string memory, uint256, string memory, address, address[] memory)
   {
+    require(_assetId >= 1 && _assetId < assetCounter, "Asset ID must be within valid range");
     return (
       assets[_assetId].productType,
       assets[_assetId].productionDate,
