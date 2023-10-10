@@ -118,4 +118,22 @@ contract SupplyChainTracking is Ownable {
     assetCounter += 1;
     emit AssetRegistered(_currentAssetId);
   }
+
+  /**
+   * Function to retrieve an asset's data providing it's ID
+   * @param _assetId The ID of the asset being retrieved
+   */
+  function getAsset(uint _assetId)
+    public
+    view
+    returns (string memory, uint256, string memory, address, address[] memory)
+  {
+    return (
+      assets[_assetId].productType,
+      assets[_assetId].productionDate,
+      assets[_assetId].origin,
+      assets[_assetId].currentHolder,
+      assets[_assetId].holderHistory
+    );
+  }
 }

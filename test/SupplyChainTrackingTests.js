@@ -104,9 +104,24 @@ describe("SupplyChainTracking tests", function () {
       const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
       await supplyChainTracking.registerActor(addr1.address, 1);
       const currentTimestamp = Date.now().toString();
-
+      
       const result = supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
       await expect(result).to.be.revertedWith("Actor's role must be Producer");
+    })
+    
+    it("Should return an asset's data providing it's id", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      await supplyChainTracking.registerActor(addr1.address, 0);
+
+      const assetType = "Tyre";
+      const assetProductionDate = Date.now().toString();
+      const assetOrigin = "Buenos Aires";
+      const assetData = [assetType, BigInt(assetProductionDate), assetOrigin, addr1.address, [addr1.address]];
+
+      await supplyChainTracking.connect(addr1).registerAsset(assetType, assetProductionDate, assetOrigin);
+
+      const result = await supplyChainTracking.getAsset(0);
+      expect(result).to.deep.equal(assetData);
     })
   });
 });
