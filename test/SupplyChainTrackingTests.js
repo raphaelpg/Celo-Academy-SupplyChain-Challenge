@@ -108,6 +108,18 @@ describe("SupplyChainTracking tests", function () {
       const result = supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
       await expect(result).to.be.revertedWith("Actor's role must be Producer");
     })
+
+    it("Should return the total number of assets", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      expect(await supplyChainTracking.getTotalAssetNumber()).to.equal(0);
+      
+      await supplyChainTracking.registerActor(addr1.address, 0);
+      const currentTimestamp = Date.now().toString();
+      
+      await supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
+      await supplyChainTracking.connect(addr1).registerAsset("Screen", currentTimestamp, "Santiago");
+      expect(await supplyChainTracking.getTotalAssetNumber()).to.equal(2);
+    })
     
     it("Should return an asset's data providing it's id", async function () {
       const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);

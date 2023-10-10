@@ -124,6 +124,18 @@ contract SupplyChainTracking is Ownable {
   }
 
   /**
+   * Function to retrieve total number of assets
+   */
+  function getTotalAssetNumber()
+    public
+    view
+    returns (uint)
+  {
+    return (assetCounter - 1);
+  }
+
+
+  /**
    * Function to retrieve an asset's data providing it's ID
    * @param _assetId The ID of the asset being retrieved
    */
