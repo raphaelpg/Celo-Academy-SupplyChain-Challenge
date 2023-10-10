@@ -8,6 +8,8 @@ contract SupplyChainTracking is Ownable {
   /**
    * Contract state variables.
    */
+
+  // Possible roles of the actors
   enum Role {
     Producer,
     Carrier,
@@ -20,7 +22,7 @@ contract SupplyChainTracking is Ownable {
     bool active;
   }
 
-  mapping(address => Actor) private actors;
+  mapping(address => Actor) public actors;
 
   event ActorRegistered(address actor, Role role);
   event ActorDisabled(address actor);
@@ -59,5 +61,21 @@ contract SupplyChainTracking is Ownable {
   {
     actors[_actor].active = false;
     emit ActorDisabled(_actor);
+  }
+
+  /**
+   * Function to get an actor's data
+   * @param _actor The Ethereum address of the actor being retrieved
+   */
+  function getActor(address _actor) 
+    public
+    view
+    onlyOwner
+    returns (Role, bool)
+  {
+    return (
+      actors[_actor].role,
+      actors[_actor].active
+    );
   }
 }

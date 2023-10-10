@@ -49,10 +49,36 @@ describe("SupplyChainTracking tests", function () {
 
     it("Should not allow unauthorized address to disable an actor", async function () {
       const { supplyChainTracking, addr1, addr2 } = await loadFixture(deploySupplyChainTrackingFixture);
-
+      
       await supplyChainTracking.registerActor(addr1.address, 1);
       const unauthorizedDisabling = supplyChainTracking.connect(addr2).disableActor(addr1.address);
       await expect(unauthorizedDisabling).to.be.revertedWithCustomError(supplyChainTracking, "OwnableUnauthorizedAccount");
+    })
+    
+    it("Should get an actor's data", async function () {
+      const { supplyChainTracking, addr1, addr2 } = await loadFixture(deploySupplyChainTrackingFixture);
+
+      const actor = addr1.address;
+      const role = 1;
+
+      await supplyChainTracking.registerActor(actor, role);
+
+      const [returnedRole, returnedStatus] = await supplyChainTracking.getActor(actor);
+
+      expect(returnedRole.toString()).to.equal("1");
+      expect(returnedStatus).to.equal(true);
+    })
+
+    it("Should not allow unauthorized address get an actor's data", async function () {
+      const { supplyChainTracking, addr1, addr2 } = await loadFixture(deploySupplyChainTrackingFixture);
+
+      const actor = addr1.address;
+      const role = 1;
+
+      await supplyChainTracking.registerActor(actor, role);
+
+      const actorAdata = supplyChainTracking.connect(addr2).getActor(actor);
+      await expect(actorAdata).to.be.revertedWithCustomError(supplyChainTracking, "OwnableUnauthorizedAccount");
     })
   });
 });
