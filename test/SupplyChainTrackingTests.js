@@ -81,4 +81,32 @@ describe("SupplyChainTracking tests", function () {
       await expect(actorAdata).to.be.revertedWithCustomError(supplyChainTracking, "OwnableUnauthorizedAccount");
     })
   });
+
+  describe("Test Product functions", async function () {
+    it("Should allow a Producer to register a new asset", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      await supplyChainTracking.registerActor(addr1.address, 0);
+      const currentTimestamp = Date.now().toString();
+
+      const result = await supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
+      await expect(result).to.emit(supplyChainTracking, 'AssetRegistered');
+    })
+    
+    it("Should not allow a Producer to register a new asset if it is not registered", async function () {
+      const { supplyChainTracking, addr2 } = await loadFixture(deploySupplyChainTrackingFixture);
+      const currentTimestamp = Date.now().toString();
+
+      const result = supplyChainTracking.connect(addr2).registerAsset("Battery", currentTimestamp, "Curitiba");
+      await expect(result).to.be.revertedWith("Actor not enabled");
+    })
+
+    it("Should not allow an actor without Producer role to register a new asset", async function () {
+      const { supplyChainTracking, addr1 } = await loadFixture(deploySupplyChainTrackingFixture);
+      await supplyChainTracking.registerActor(addr1.address, 1);
+      const currentTimestamp = Date.now().toString();
+
+      const result = supplyChainTracking.connect(addr1).registerAsset("Battery", currentTimestamp, "Curitiba");
+      await expect(result).to.be.revertedWith("Actor's role must be Producer");
+    })
+  });
 });
