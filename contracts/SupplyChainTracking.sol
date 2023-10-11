@@ -32,7 +32,7 @@ contract SupplyChainTracking is Ownable {
     address[] holderHistory;
   }
 
-  mapping(address => Actor) public actors;
+  mapping(address => Actor) private actors;
   mapping(uint => Asset) public assets;
 
   event ActorRegistered(address actor, Role role);
@@ -146,7 +146,7 @@ contract SupplyChainTracking is Ownable {
 
 
   /**
-   * Function to retrieve an asset's data providing it's ID
+   * Function to retrieve an asset's data providing it's ID (simple mapping getter does not return history array)
    * @param _assetId The ID of the asset being retrieved
    */
   function getAsset(uint _assetId)
