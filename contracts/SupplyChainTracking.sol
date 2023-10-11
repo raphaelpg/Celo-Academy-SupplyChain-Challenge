@@ -8,7 +8,7 @@ contract SupplyChainTracking is Ownable {
   /**
    * Contract state variables.
    */
-  uint assetCounter; // asset Id counter, increment when a new asset isregistered
+  uint assetCounter; // asset Id counter, incremented when a new asset is registered
 
   // Possible roles of the actors
   enum Role {
@@ -160,6 +160,36 @@ contract SupplyChainTracking is Ownable {
       assets[_assetId].productionDate,
       assets[_assetId].origin,
       assets[_assetId].currentHolder,
+      assets[_assetId].holderHistory
+    );
+  }
+
+  /**
+   * Function to retrieve an asset's current holder providing it's ID
+   * @param _assetId The ID of the asset being retrieved
+   */
+  function getAssetCurrentHolder(uint _assetId)
+    public
+    view
+    returns (address)
+  {
+    require(_assetId >= 1 && _assetId < assetCounter, "Asset ID must be within valid range");
+    return (
+      assets[_assetId].currentHolder
+    );
+  }
+
+  /**
+   * Function to retrieve an asset's holder history providing it's ID
+   * @param _assetId The ID of the asset being retrieved
+   */
+  function getAssetHolderHistory(uint _assetId)
+    public
+    view
+    returns (address[] memory)
+  {
+    require(_assetId >= 1 && _assetId < assetCounter, "Asset ID must be within valid range");
+    return (
       assets[_assetId].holderHistory
     );
   }

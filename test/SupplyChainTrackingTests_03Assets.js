@@ -25,7 +25,7 @@ describe("SupplyChainTracking tests", function () {
       await expect(result).to.emit(supplyChainTracking, 'AssetRegistered');
     })
     
-    it("Should not allow a Producer to register a new asset if it is not registered", async function () {
+    it("Should not allow an unregistered Producer to register a new asset", async function () {
       const { supplyChainTracking, addr2 } = await loadFixture(deploySupplyChainTrackingFixture);
       const currentTimestamp = Date.now().toString();
 
