@@ -1,6 +1,6 @@
 ## Introduction
 
-This is an answer to CELO [Blockchain-Supply-Chain-Tracking-Assets-in-Solidity-Coding-Challenge](https://github.com/celo-academy/Blockchain-Supply-Chain-Tracking-Assets-in-Solidity-Coding-Challenge#submission) developed with Hardhat, the contract is coded in Solidity and tests in JavaScript.
+This is an answer to CELO [Blockchain-Supply-Chain-Tracking-Assets-in-Solidity-Coding-Challenge](https://github.com/celo-academy/Blockchain-Supply-Chain-Tracking-Assets-in-Solidity-Coding-Challenge) developed with Hardhat, the contract is coded in Solidity and tests in JavaScript.
 
 The main purpose of this repository is to provide an educational example for a basic Supply Chain problem, while teaching basic Solidity principles and how to test them.
 
@@ -8,8 +8,8 @@ Contract and tests are commented for an easy understanding.
 
 ## How to run
 
-There is one contract called SupplyChainTracking.sol included in the "contracts" folder.
-Test files are included inside the "test" folder.
+There is one contract called SupplyChainTracking.sol included in the "contracts" folder.\
+Test files are included inside the "test" folder.\
 To compile the contract run:
 ```
 npx hardhat compile
@@ -18,6 +18,7 @@ To run the test suite:
 ```
 npx hardhat test
 ```
+You can also visit [https://remix.ethereum.org/](https://remix.ethereum.org/) to deploy and play with the contract.
 
 ## Challenge requirements:
 
