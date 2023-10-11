@@ -3,6 +3,13 @@ pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/**
+ * @title SupplyChainTracking
+ * @author raphaelpg
+ * @notice Simple Supply Chain Tracking contract
+ * Contract inherit from OpenZeppelin Ownable.sol contract to provide ownership functionnalities
+ * Visit https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+ */
 contract SupplyChainTracking is Ownable {
 
   /**
@@ -10,7 +17,10 @@ contract SupplyChainTracking is Ownable {
    */
   uint assetCounter; // asset Id counter, incremented when a new asset is registered
 
-  // Possible roles of the actors
+  /**
+  * Possible roles of the actors 
+  * For example, to set an actor role as a Producer, actor's role must be registered as 0 
+  */
   enum Role {
     Producer,
     Carrier,
@@ -18,11 +28,18 @@ contract SupplyChainTracking is Ownable {
     Consumer
   }
 
+  /**
+   * Defining the struct variables Actor and Asset
+   * Actor will be using the Role defined above
+   */
   struct Actor {
     Role role;
     bool active;
   }
 
+  /**
+   * For simplicity here we define the Type and Origin of a product as a string
+   */
   struct Asset {
     uint productId;
     string productType; 
@@ -32,18 +49,29 @@ contract SupplyChainTracking is Ownable {
     address[] holderHistory;
   }
 
+  /**
+   * Mappings to store actors and assets
+   */
   mapping(address => Actor) private actors;
   mapping(uint => Asset) public assets;
 
+  /**
+   * List of events emitted by the functions
+   */
   event ActorRegistered(address actor, Role role);
   event ActorDisabled(address actor);
   event AssetRegistered(uint productId);
   event AssetTransfered(uint productId, address _from, address _to);
 
+  /**
+   * Defining specific errors
+   */
   error OnlyAssetOwner();
 
   /**
    * Contract initialization.
+   * Here we initialized the variables to their starting values
+   * Msg.sender is passed as a param to the Ownable Contract to allow ownership functionnalities
    */
   constructor() 
     Ownable(msg.sender) 
@@ -57,6 +85,8 @@ contract SupplyChainTracking is Ownable {
   }
 
   /**
+   * Custom modifiers can be created and applied on any functions
+   * Here we can apply this modifier to restrict the use of the function by the owner of the contract only
    * @dev Throws if called by any account other than the owner.
    */
   modifier onlyAssetOwner(uint _assetId) {
@@ -69,6 +99,7 @@ contract SupplyChainTracking is Ownable {
    */
   /**
    * Function to register an actor
+   * Call the function again to modify the role of an already registered actor
    * @param _actor The Ethereum address of the actor being registered
    * @param _role The role of the actor being registered
    */
